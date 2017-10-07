@@ -1,49 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" href="/scripts/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" href="/scripts/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> 
+    <link type="text/css" href="/scripts/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />    
 </head>
 
 <body>
-    <form id="test">
-        <div class="form-group">
-            <div class="input-group bootstrap-timepicker timepicker">
-                <input id="timepicker1" type="text" class="form-control input-small">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+
+    <head>
+        <title>Bootstrap Example</title>
+    </head>
+
+    <body>
+            <div id="successBanner" class="alert alert-success hidden">
+                <strong>Success!</strong> Times have been changed
             </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group bootstrap-timepicker timepicker">
-                <input id="timepicker2" type="text" class="form-control input-small">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+            <div id="failureBanner" class="alert alert-danger hidden">
+                <strong>UH OH!</strong> Something went wrong
             </div>
+
+        <div class="container">
+
+            <form id="test" class="form-signin">
+                <h2 class="form-signin-heading">Set Wakeup and Shutdown Times</h2>
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="text" id="timepicker1" class="form-control" placeholder="Wakeup Time" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="text" id="timepicker2" class="form-control" placeholder="Shutdown Time" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+            </form>
+
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
 
-
-
-
-    <script src="/scripts/jquery/dist/jquery.min.js"></script>
-    <script src="/scripts/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/scripts/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript">
-        $('#timepicker1').timepicker();
-        $('#timepicker2').timepicker();
-        $('#test').submit(function() {
-            $.ajax({
-                type: "POST",
-                url: "/config/changeTimes",
-                data: JSON.stringify({wakeup: $("#timepicker1").val(), shutdown: $("#timepicker2").val()}),
-                success: function(){},
-                dataType: "json",
-                contentType: "application/json"
-              });
-        })
-    </script>
-</body>
+        <script src="/scripts/jquery/dist/jquery.min.js"></script>
+        <script src="/scripts/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="/scripts/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+        <script type="text/javascript">
+            $('#timepicker1').timepicker();
+            $('#timepicker2').timepicker();
+            $('#test').submit(function () {
+                console.log($("#timepicker1").val());
+                console.log($("#timepicker2").val());
+                $.ajax({
+                    type: "POST",
+                    url: "/config/changeTimes",
+                    data: JSON.stringify({ wakeup: $("#timepicker1").val(), shutdown: $("#timepicker2").val() }),
+                    success: function (data) { 
+                        console.log("ererer");
+                      $("#successBanner").removeClass('hidden');  
+                    },
+                    error: function(data) {
+                        console.log(data);
+                       $("#failureBanner").removeClass('hidden');
+                    },
+                    dataType: "json",
+                    contentType: "application/json"
+                });
+                return false;
+            })
+        </script>
+    </body>
 
 </html>

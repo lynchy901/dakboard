@@ -43,7 +43,8 @@ app.post('/config/changeTimes', function(req, res) {
     console.log("sh /home/pi/Documents/dakboard/changeTime.sh " + args);
     exec("sh /home/pi/Documents/dakboard/changeTime.sh " + args, function(err, stdout, stderr) {
         console.log("changing time");
-    })
+    });
+    res.send({});
 })
 
 function getCronString(time, command) {
